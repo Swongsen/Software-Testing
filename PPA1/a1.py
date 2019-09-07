@@ -69,54 +69,37 @@ def shortestDistance(x1, y1, x2, y2):
 
     return distance
 
-def email(emailstring):
-    # Checks if the first character of the email is an alphabet
-    z = 1
-    if(emailstring[0].isalpha() == False):
-        z = 0
-
-    # Checks if there is an instance of two periods next to each other
-    for x in range(0, len(emailstring) - 1):
-        if(emailstring[x] == '.'):
-            if(emailstring[x+1] == '.'):
-                z = 0
-
-    # Checks for forbidden characters in the email string
-    if('""' in emailstring) or ('(' in emailstring) or (')' in emailstring) or (',' in emailstring) or (':' in emailstring) or (';' in emailstring) or ('<' in emailstring) or ('>' in emailstring) or ('[' in emailstring) or (']' in emailstring) or ('`' in emailstring) or ('\\' in emailstring):
-        z = 0
-    if(emailstring.count('@') > 1 or emailstring.count('@') == 0):
-        z = 0
-
-    # Checks to see if the '@' used in the string is for the @something.com
-    if('@' in emailstring):
-            # If after the @, there is no domain ( @.com)
-            if((len(emailstring) - emailstring.index('@')) == 5):
-                z = 0
-            # If after the @, there is an non-alphabetical letter
-            if(emailstring[emailstring.index('@') + 1].isalpha() == False):
-                z = 0
-            #print(x,"char:", emailstring[x])
-            if(emailstring[len(emailstring) - 1] != 'm'):
-                z = 0
-            if(emailstring[len(emailstring) - 2] != 'o'):
-                z = 0
-            if(emailstring[len(emailstring) - 3] != 'c'):
-                z = 0
-            if(emailstring[len(emailstring) - 4] != '.'):
-                z = 0
-            # If all the previous tests pass, it checks to make sure the domain are letters
-            #if(z == 1):
-            #    for x in range(emailstring.index('@')+1, emailstring.index('.')):
-                    #print(emailstring[x])
-            #        if(emailstring[x].isalpha() == False):
-            #            z = 0
-
-    # If all the tests pass, print out valid email
-    if(z == 1):
-        return('Valid')
-    elif(z == 0):
+def email(email_string):
+    # needs at least one @, but more than one @ is improper formatting
+    if email_string.count('@') != 1:
         return('Invalid')
 
+    some_string, domain = email_string.split('@')
+
+    # some_string/domain has to be at least 1 character
+    if (len(some_string) == 0) or (len(domain) == 0):
+        return('Invalid')
+
+    # some_string can't start or end with '.'
+    if some_string[0] == '.' or some_string[-1] == '.':
+        return('Invalid')
+
+    # no consecutive periods
+    if '..' in some_string:
+        return('Invalid')
+
+    # must start with a non-numeric
+    if some_string[0].isnumeric():
+        return('Invalid')
+    
+    # can't contain "(),:;<>@[\]'
+    for char in '\"(),:;<>@[\\]\'':
+        if char in some_string:
+            return('Invalid')
+    
+    # if nothing is wrong, it's valid
+    return('Valid')
+    
 def cliInterface():
     print('____________________')
     print('  Select a function\n')
