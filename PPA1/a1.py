@@ -1,87 +1,73 @@
 import sys
 import math
+import re
 
 # BODY MASS INDEX FUNCTION
-# I
-def bmi(heightInput, weightInput):
+# Input: heightInput (in feet and inches, ex: 5'10)
+# Input: weightInput (in pounds, ex: 180)
+# Output: BMI, WeightClassification
+def bmi(height_input, weight_input):
+    if ('\'' not in height_input):
+        print('Incorrect input for height detected.' +
+        '\nAs an example, if you are 5 feet and 10 inches tall, enter: 5\'10')
+    
+    # Seperate into feet and inches by splitting the string by the single quote
+    ft, inch = height_input.split('\'')
 
-    ft = int(heightinput[0])
-    # If height is say, 5'9 for example.
-    if(len(heightinput) == 3):
-        inch = int(heightinput[2])
-    # If height is say, 5'10 for example.
-    elif(len(heightinput) == 4):
-        # Concatenates the last two characters in the input and converts to an int
-        concat = heightinput[2] + heightinput[3]
-        inch = int(concat)
+    # Convert to floats
+    ft, inch = float(ft), float(inch)
 
     # Turns the height into inches
     height = ft*12 + inch
-    #print("ur height: ", height)
 
+    # BMI implementation from http://extoxnet.orst.edu/faqs/dietcancer/web2/twohowto.html
     # Get the weight into kilograms
-    convweight = int(weightinput) * 0.45
+    conv_weight = float(weight_input) * 0.45
     # Get the height into meters
-    convheight = height * 0.025
-    squared = convheight * convheight
-    BMI = convweight / squared
+    conv_height = height * 0.025
+    BMI = round(conv_weight / (conv_height * conv_height), 1)
 
     # Checking for different BMI ranges
     if(BMI < 18.5):
-        print("Your BMI is", format(BMI,'.1f'), "and you are underweight.")
+        return BMI, 'Underweight'
     elif(BMI >= 18.5 and BMI < 25):
-        print("Your BMI is", format(BMI,'.1f'), "and you are normal weight.")
+        return BMI, 'Normal weight'
     elif(BMI >= 25 and BMI < 30):
-        print("Your BMI is", format(BMI,'.1f'), "and you are overweight.")
+        return BMI, 'Overweight'
     elif(BMI >= 30):
-        print("Your BMI is", format(BMI,'.1f'), "and you are obese.")
+        return BMI, 'Obese'
 
-def retirement(age, salaryInput, savedInput, savingsGoalInput):
-    # Converts the annual salary string into a float
-    salarystr = ''
-    for x in range(1, len(salaryInput)):
-        salarystr += salaryInput[x]
-    salary = float(salarystr.replace(',',''))
-    #print(salary)
+# RETIREMENT FUNCTION
+# Input: current_age (in years)
+# Input: salary (Annual Salary, ex: $60,000)
+# Input: saved (Percent of how much is being saved, ex: 5%)
+# Input: savings_goal (Savings goal before death, ex: $500,000)
+# Output: savings_goal_age (Age at which the savings_goal is achieved)
+def retirement(current_age, salary, saved_percent, savings_goal):
 
-    # Converts the saved percentage string into a float.
-    savedstr = ''
-    for x in range(0, len(savedInput) - 1):
-        savedstr += savedInput[x]
-    saved = float(savedstr.replace('.', ''))
-    savedpercent = saved / 100
+    # Removes special characters
+    def removeSpecial(string):
+        return re.sub('[!@#$%^&*,]', '', string)
+    
+    # Conversion from string to float
+    salary = float(removeSpecial(salary))
+    saved_decimal = float(removeSpecial(saved_percent)) / 100
+    savings_goal = float(removeSpecial(savings_goal))
 
-    # Converts the desired savings goal string into a float
-    savingsgoalstr = ''
-    for x in range(1, len(savingsGoalInput)):
-        savingsgoalstr += savingsGoalInput[x]
-    savingsgoal = float(savingsgoalstr.replace(',',''))
-    #print(savingsgoal)
+    # Formula to calculate how many years left
+    # Based off (salary*saved_percent*years)+(salary*saved_percent*years*0.35) = savings_goal
+    years_to_goal = math.ceil(savings_goal/(salary*saved_decimal*1.35))
 
-    # Calculation for meeting savings goal
-    savingsperyear = salary * savedpercent
-    employermatch = 0.35 * savingsperyear
-    years = 1
-    savings = savingsperyear + employermatch
-
-    while savings <= savingsgoal:
-        savings += savingsperyear + employermatch
-        years += 1
-
-    savingsgoalage = years + age
-
-    if(savingsgoalage < 100):
-        print("You will reach your savings goal at age", savingsgoalage)
-    else:
-        print("You will reach your savings goal after 100 and will not meet it.")
+    savings_goal_age = years_to_goal + current_age
+    return savings_goal_age
 
 def shortestDistance(x1, y1, x2, y2):
-    xsquared = (x2 - x1) * (x2 - x1)
-    ysquared = (y2 - y1) * (y2 - y1)
-    inside = xsquared + ysquared
-    distance = math.sqrt(inside)
+    x_squared = (x2 - x1) * (x2 - x1)
+    y_squared = (y2 - y1) * (y2 - y1)
+    squared_distance = x_squared + y_squared
+    distance = math.sqrt(squared_distance)
 
-    print("Distance between", (x1,y1), "and" , (x2,y2), "is", distance)
+    return distance
 
 def email(emailstring):
     # Checks if the first character of the email is an alphabet
@@ -127,70 +113,81 @@ def email(emailstring):
 
     # If all the tests pass, print out valid email
     if(z == 1):
-        print("\nCongratulations, you have a valid email address!")
+        return('Valid')
     elif(z == 0):
-        print("\nInvalid email.")
+        return('Invalid')
 
-while True:
-    print("____________________")
-    print("  Select a function\n")
+def cliInterface():
+    print('____________________')
+    print('  Select a function\n')
 
-    print("1. Body Mass Index")
-    print("2. Retirement")
-    print("3. Shortest Distance")
-    print("4. Email Verifier")
-    print("5. Exit Program")
-    print("____________________")
+    print('1. Body Mass Index')
+    print('2. Retirement')
+    print('3. Shortest Distance')
+    print('4. Email Verifier')
+    print('5. Exit Program')
+    print('____________________')
 
     function = int(input())
 
     if(function == 1):
-        print("Body Mass Index function selected.")
-        print("Input height in feet and inches. (ex. 5'10)")
-        heightinput = input()
+        print('Body Mass Index function selected.')
+        print('Input height in feet and inches. (ex. 5\'10)')
+        height_input = input()
 
-        print("Input your weight in pounds")
-        weightinput = input()
+        print('Input your weight in pounds')
+        weight_input = input()
 
-        bmi(heightinput, weightinput)
+        BMI, classification = bmi(height_input, weight_input)
+        print('BMI: {}, Weight Classification: {}'.format(BMI, classification))
 
     elif(function == 2):
-        print("Retirement function selected.")
-        print("Enter your age")
-        age = int(input())
+        print('Retirement function selected.')
+        print('Enter your current age (in years)')
+        current_age = int(input())
         
-        print("Enter your annual salary. (ex. $60,000)")
-        salaryInput = input()
+        print('Enter your annual salary. (ex. $60,000)')
+        salary = input()
 
-        print("Enter percentage saved. (ex. 5%)")
-        savedInput = input()
+        print('Enter percentage saved. (ex. 5%)')
+        saved = input()
 
-        print("Enter desired retirement savings goal. (ex. $200,000)")
-        savingsGoalInput = input()
+        print('Enter desired retirement savings goal. (ex. $200,000)')
+        savings_goal = input()
 
-        retirement(age, salaryInput, savedInput, savingsGoalInput)
+        savings_goal_age = retirement(current_age, salary, saved, savings_goal)
+        
+        if(savings_goal_age < 100):
+            print('You will reach your savings goal at age', savings_goal_age)
+        else:
+            print('You will not meet your savings goal, ' +
+            'you would have to live to be', savings_goal_age)
 
     elif(function == 3):
-        print("Shortest Distance function selected.")
-        print("Input your 2 points. Format: (x1, y1), (x2, y2)")
+        print('Shortest Distance function selected.')
+        print('Input your 2 points. Format: (x1, y1), (x2, y2)')
         x1 = float(input("x1: "))
         y1 = float(input("y1: "))
         x2 = float(input("x2: "))
         y2 = float(input("y2: "))
-        shortestDistance(x1, y1, x2, y2)
+
+        distance = shortestDistance(x1, y1, x2, y2)
+        print('Distance between', (x1,y1), 'and' , (x2,y2), 'is', distance)
 
     elif(function == 4):
-        print("Email Verifier function selected.")
-        print("Enter your email.")
+        print('Email Verifier function selected.')
+        print('Enter your email.')
         emailstring = input()
-        email(emailstring)
+        
+        validity = email(emailstring)
+        print('The email you entered is: {}'.format(validity))
 
     elif(function == 5):
         sys.exit(0)
 
     else:
-        print("Invalid input")
+        print('Invalid input, enter a number 1-5')
 
-# 25.69 / 2
-# 29.96 / 4
-# 29.94 / 3
+if __name__=='__main__':
+    while True:
+        cliInterface()
