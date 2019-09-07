@@ -5,12 +5,30 @@ def test_bmi():
     # http://extoxnet.orst.edu/faqs/dietcancer/web2/twohowto.html
     assert bmi('5\'3\"', '125') == (22.7, 'Normal weight')
 
+    # Test Underweight
+    assert bmi('5\'10\"', 50.5)[1] == 'Underweight'
+
+    # Test Obese
+    assert bmi('5\'0\"', 500)[1] == 'Obese'
+
+    # Test Overweight
+    assert bmi('5\'3\"', 155)[1] == 'Overweight'
+
 def test_retirement():
+    # Testing a manually calculated answer
     assert retirement(25, '$100,000', '10%', '$1,000,000') == 100
+
+    # Testing a goal that is achieved within 1 year
+    assert retirement(25, '$1,000,000,000', '10%', '$1') == 26
 
 def test_shortestDistance():
     # Testing the special triangle: 3, 4, 5
     assert shortestDistance(0, 0, 4, 3) == 5
+
+    # Testing precision to 15 decimal points
+    # Using special triangle: 1, sqrt(2), 3
+    # Using sqrt(2) definition from https://apod.nasa.gov/htmltest/gifcity/sqrt2.1mil
+    assert round(shortestDistance(0, 0, 1, 1), 15) == 1.414213562373095
 
 def test_email():
     # email: some_string '@' domain
