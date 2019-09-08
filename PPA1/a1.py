@@ -7,7 +7,7 @@ import re
 # Input: weight_input (in pounds, ex: 180)
 # Output: BMI, WeightClassification
 def bmi(height_input, weight_input):
-    
+
     # Seperate into feet and inches by splitting the string by the single quote
     ft, inch = height_input.split('\'')
 
@@ -41,7 +41,10 @@ def bmi(height_input, weight_input):
 # Input: savings_goal (Savings goal before death, ex: $500,000)
 # Output: savings_goal_age (Age at which the savings_goal is achieved)
 def retirement(current_age, salary, saved_percent, savings_goal):
-    
+
+    if current_age >= 100:
+        raise ValueError()
+
     # Removes special characters
     def removeSpecial(string):
         return re.sub('[!@#$%^&*,]', '', string)
@@ -85,10 +88,20 @@ def isValidEmail(email_string):
     # split email into some_string '@' domain
     some_string, domain = email_string.split('@')
 
-    # some_string/domain has to be at least 1 character
-    if (len(some_string) == 0) or (len(domain) == 0):
+    # some_string has to be at least 1 character
+    if len(some_string) == 0:
         return False
 
+    # domain has to be at least 3 characters
+    # domain needs to be in x.y format (Ex: abc.com, x=abc, y=com)
+    # can also possibly be in x.y.z
+    if len(domain) < 3 or domain.count('.') == 0:
+        return False
+
+    for chars in domain.split('.'):
+        if len(chars) == 0:
+            return False
+            
     # some_string can't start or end with '.'
     if some_string[0] == '.' or some_string[-1] == '.':
         return False
@@ -171,8 +184,14 @@ def cliInterface():
         print('Enter your email.')
         emailstring = input()
         
-        validity = email(emailstring)
-        print('The email you entered is: {}'.format(validity))
+        validity = isValidEmail(emailstring)
+
+        if validity:
+            validity = 'valid'
+        else:
+            validity = 'invalid'
+
+        print('The email you entered is {}'.format(validity))
 
     elif(function == 5):
         sys.exit(0)

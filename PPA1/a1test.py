@@ -1,4 +1,14 @@
+import pytest
 from a1 import bmi, retirement, shortestDistance, isValidEmail
+
+# Always raises a ValueError
+def error():
+    raise ValueError('Hello')
+
+# Tests pytest's ability to check for ValueError
+def test_error():
+    with pytest.raises(ValueError):
+        error()
 
 def test_bmi():
     # Test confirming BMI calculation from:
@@ -20,6 +30,10 @@ def test_retirement():
 
     # Testing a goal that is achieved within 1 year
     assert retirement(25, '$1,000,000,000', '10%', '$1') == 26
+
+    # Test that a user can't be 100+ years old
+    with pytest.raises(ValueError):
+        retirement(100, '$1,000,000,000', '10%', '$1')
 
 def test_shortestDistance():
     # Testing the special triangle: 3, 4, 5
@@ -58,3 +72,10 @@ def test_email():
     # Test that some_string can NOT contain certain special characters: "(),:;<>@[\]'
     for char in '\"(),:;<>@[\\]\'':
         assert isValidEmail(char+'@email.com') == False
+
+    # Test that domain is in the right format: x.y (Ex: abc.com, x=abc, y=com)
+    # x.y.z..... is also valid
+    assert isValidEmail('test@.aa') == False
+    assert isValidEmail('test@aa.') == False
+    assert isValidEmail('test@..') == False
+    assert isValidEmail('test@x.y.z') == True
