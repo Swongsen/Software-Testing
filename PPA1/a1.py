@@ -171,6 +171,9 @@ def isValidEmail(email_string):
     if ' ' in some_string:
         return False
 
+    if ' ' in domain:
+        return False
+
     # some_string can't start or end with '.'
     if some_string[0] == '.' or some_string[-1] == '.':
         return False
