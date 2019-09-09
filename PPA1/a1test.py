@@ -40,7 +40,7 @@ def test_bmi():
     with pytest.raises(ValueError):
         bmi('5\'\'10\"', '100')
 
-    
+
 
 def test_retirement():
     # Testing a manually calculated answer
@@ -119,3 +119,8 @@ def test_isValidEmail():
     assert isValidEmail('test@aa.') == False
     assert isValidEmail('test@..') == False
     assert isValidEmail('test@x.y.z') == True
+
+    # Testing for spaces in either the some_string or domain
+    assert isValidEmail('te st@gmail.com') == False
+    assert isValidEmail('test@gm ail.com') == False
+    

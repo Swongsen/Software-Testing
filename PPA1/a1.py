@@ -9,7 +9,7 @@ import re
 #           - Examples: $10.00, 5.4%, 5'10"...
 # Output: True/False (True: numeric input, False: non-numeric input detected)
 def isNumericInput(input, allowed_once):
-    
+
     # Make sure input is string for regex
     input = str(input)
 
@@ -76,7 +76,7 @@ def bmi(height_input, weight_input):
 # Input: savings_goal (Savings goal before death, ex: $500,000)
 # Output: savings_goal_age (Age at which the savings_goal is achieved)
 def retirement(current_age, salary, saved_percent, savings_goal):
-    
+
     # Removes valid special characters
     def removeSpecial(string):
         return re.sub('[$%,]', '', string)
@@ -86,7 +86,7 @@ def retirement(current_age, salary, saved_percent, savings_goal):
         if not isNumericInput(input, allowed_once = ['$', '%', '.']):
             raise ValueError('\nIncorrect input detected. ' +
                             'Please enter an integer (1, 2, 3...) or a float (1.0, 2.0, 3.0...)\n')
-    
+
     # Remove special characters for all inputs, and convert them to numbers
     current_age = int(current_age)
     salary = float(removeSpecial(salary))
@@ -126,14 +126,14 @@ def shortestDistance(x1, y1, x2, y2):
     # Check for non-int/non-float answers
     for coord in (x1, y1, x2, y2):
         if not isNumericInput(coord, ['.']):
-            raise ValueError('\nIncorrect input detected. ' + 
+            raise ValueError('\nIncorrect input detected. ' +
                             'Please enter an integer (1, 2, 3...) or a float (1.0, 2.0, 3.0...)\n')
 
     x1 = float(x1)
     y1 = float(y1)
     x2 = float(x2)
     y2 = float(y2)
-    
+
     x_squared = (x2 - x1) * (x2 - x1)
     y_squared = (y2 - y1) * (y2 - y1)
     squared_distance = x_squared + y_squared
@@ -145,7 +145,7 @@ def shortestDistance(x1, y1, x2, y2):
 # Input: email_string (string which has email to be verified)
 # Output: True/False (True if valid, False if invalid)
 def isValidEmail(email_string):
-    
+
     # needs at least one @, but more than one @ is improper formatting
     if email_string.count('@') != 1:
         return False
@@ -167,6 +167,10 @@ def isValidEmail(email_string):
         if len(chars) == 0:
             return False
 
+    # if there is a space in the some_string
+    if ' ' in some_string:
+        return False
+
     # some_string can't start or end with '.'
     if some_string[0] == '.' or some_string[-1] == '.':
         return False
@@ -178,17 +182,17 @@ def isValidEmail(email_string):
     # must start with a non-numeric
     if some_string[0].isnumeric():
         return False
-    
+
     # can't contain "(),:;<>@[\]'
     for char in '\"(),:;<>@[\\]\'':
         if (char in some_string) or (char in domain):
             return False
-    
+
     # if nothing is wrong, it's valid
     return True
-    
+
 def cliInterface():
-    
+
     print('____________________')
     print('  Select a function\n')
 
@@ -208,7 +212,7 @@ def cliInterface():
 
         print('Input your weight in pounds')
         weight_input = input()
-        
+
         try:
             BMI, classification = bmi(height_input, weight_input)
             print('BMI: {}, Weight Classification: {}'.format(BMI, classification))
@@ -219,7 +223,7 @@ def cliInterface():
         print('Retirement function selected.')
         print('Enter your current age (in years)')
         current_age = input()
-        
+
         print('Enter your annual salary. (ex. $60,000)')
         salary = input()
 
@@ -246,7 +250,7 @@ def cliInterface():
         y1 = input("y1: ")
         x2 = input("x2: ")
         y2 = input("y2: ")
-        
+
         try:
             distance = shortestDistance(x1, y1, x2, y2)
             print('Distance between', (x1,y1), 'and' , (x2,y2), 'is', distance)
@@ -258,7 +262,7 @@ def cliInterface():
         print('Email Verifier function selected.')
         print('Enter your email.')
         emailstring = input()
-        
+
         validity = isValidEmail(emailstring)
 
         if validity:
