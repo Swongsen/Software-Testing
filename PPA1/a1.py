@@ -218,7 +218,7 @@ def cliInterface():
     elif(function == 2):
         print('Retirement function selected.')
         print('Enter your current age (in years)')
-        current_age = int(input())
+        current_age = input()
         
         print('Enter your annual salary. (ex. $60,000)')
         salary = input()
