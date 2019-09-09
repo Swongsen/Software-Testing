@@ -2,11 +2,46 @@ import sys
 import math
 import re
 
+# IS NUMERIC INPUT FUNCTION
+# Input: potential_number (input that may have special characters like $, %, ., ', ")
+# Input: allowed_once
+#           - Set of characters that are allowed to appear ONCE in a numeric input
+#           - Examples: $10.00, 5.4%, 5'10"...
+# Output: True/False (True: numeric input, False: non-numeric input detected)
+def isNumericInput(input, allowed_once):
+    
+    # Make sure input is string for regex
+    input = str(input)
+
+    # Remove all commas
+    input = re.sub(',', '', input)
+
+    # Remove characters found in 'allowed_once' a single time
+    for char in allowed_once:
+        input = input.replace(char, '', 1)
+
+    if input.isnumeric():
+        return True
+    else:
+        return False
+
 # BODY MASS INDEX FUNCTION
 # Input: height_input (in feet and inches, ex: 5'10")
 # Input: weight_input (in pounds, ex: 180)
 # Output: BMI, WeightClassification
 def bmi(height_input, weight_input):
+
+    invalidInput = ValueError('\nInvalid input detected. ' +
+                            'Please enter a proper height/weight\n')
+
+    # Check for non-int/non-float input
+    for input in (height_input, weight_input):
+        if not isNumericInput(input, allowed_once = ['\'', '\"', '.']):
+            raise invalidInput
+
+    # Check that height has one ' to seperate height and weight
+    if height_input.count('\'') != 1:
+        raise invalidInput
 
     # Seperate into feet and inches by splitting the string by the single quote
     ft, inch = height_input.split('\'')
@@ -41,18 +76,37 @@ def bmi(height_input, weight_input):
 # Input: savings_goal (Savings goal before death, ex: $500,000)
 # Output: savings_goal_age (Age at which the savings_goal is achieved)
 def retirement(current_age, salary, saved_percent, savings_goal):
-
-    if current_age >= 100:
-        raise ValueError()
-
-    # Removes special characters
-    def removeSpecial(string):
-        return re.sub('[!@#$%^&*,]', '', string)
     
-    # Remove special characters for all inputs
+    # Removes valid special characters
+    def removeSpecial(string):
+        return re.sub('[$%,]', '', string)
+
+    # Check for invalid input (non-int/non-float)
+    for input in (current_age, salary, saved_percent, savings_goal):
+        if not isNumericInput(input, allowed_once = ['$', '%', '.']):
+            raise ValueError('\nIncorrect input detected. ' +
+                            'Please enter an integer (1, 2, 3...) or a float (1.0, 2.0, 3.0...)\n')
+    
+    # Remove special characters for all inputs, and convert them to numbers
+    current_age = int(current_age)
     salary = float(removeSpecial(salary))
     saved_decimal = float(removeSpecial(saved_percent)) / 100
     savings_goal = float(removeSpecial(savings_goal))
+
+    # User can technically be 0-99 (Death at 100)
+    if current_age >= 100 or current_age < 0:
+        raise ValueError('\nIncorrect input detected. ' +
+                        'Users can only be ages 0-99.')
+
+    # User can't save more than 100%, and can't save less than 0%
+    if saved_decimal < 0 or saved_decimal > 1:
+        raise ValueError('\nIncorrect input detected. ' +
+                            'Your savings percent is incorrect.')
+
+    # User can't have negative salary
+    if salary < 0:
+        raise ValueError('\nIncorrect input detected. ' +
+                        'Your salary can\'t be negative')
 
     # Formula to calculate how many years left
     # Based off (salary*saved_percent*years)+(salary*saved_percent*years*0.35) = savings_goal
@@ -68,6 +122,17 @@ def retirement(current_age, salary, saved_percent, savings_goal):
 # Input: y2 (y coordinate of point 2)
 # Output: distance (euclidian distance between point 1 and 2)
 def shortestDistance(x1, y1, x2, y2):
+
+    # Check for non-int/non-float answers
+    for coord in (x1, y1, x2, y2):
+        if not isNumericInput(coord, ['.']):
+            raise ValueError('\nIncorrect input detected. ' + 
+                            'Please enter an integer (1, 2, 3...) or a float (1.0, 2.0, 3.0...)\n')
+
+    x1 = float(x1)
+    y1 = float(y1)
+    x2 = float(x2)
+    y2 = float(y2)
     
     x_squared = (x2 - x1) * (x2 - x1)
     y_squared = (y2 - y1) * (y2 - y1)
@@ -101,7 +166,7 @@ def isValidEmail(email_string):
     for chars in domain.split('.'):
         if len(chars) == 0:
             return False
-            
+
     # some_string can't start or end with '.'
     if some_string[0] == '.' or some_string[-1] == '.':
         return False
@@ -116,7 +181,7 @@ def isValidEmail(email_string):
     
     # can't contain "(),:;<>@[\]'
     for char in '\"(),:;<>@[\\]\'':
-        if char in some_string:
+        if char in some_string or domain:
             return False
     
     # if nothing is wrong, it's valid
@@ -143,9 +208,12 @@ def cliInterface():
 
         print('Input your weight in pounds')
         weight_input = input()
-
-        BMI, classification = bmi(height_input, weight_input)
-        print('BMI: {}, Weight Classification: {}'.format(BMI, classification))
+        
+        try:
+            BMI, classification = bmi(height_input, weight_input)
+            print('BMI: {}, Weight Classification: {}'.format(BMI, classification))
+        except Exception as error:
+            print(error)
 
     elif(function == 2):
         print('Retirement function selected.')
@@ -161,23 +229,30 @@ def cliInterface():
         print('Enter desired retirement savings goal. (ex. $200,000)')
         savings_goal = input()
 
-        savings_goal_age = retirement(current_age, salary, saved, savings_goal)
-        if(savings_goal_age < 100):
-            print('You will reach your savings goal at age', savings_goal_age)
-        else:
-            print('You will not meet your savings goal, ' +
-            'you would have to live to be', savings_goal_age)
+        try:
+            savings_goal_age = retirement(current_age, salary, saved, savings_goal)
+            if(savings_goal_age < 100):
+                print('You will reach your savings goal at age', savings_goal_age)
+            else:
+                print('You will not meet your savings goal, ' +
+                    'you would have to live to be', savings_goal_age)
+        except Exception as error:
+            print(error)
 
     elif(function == 3):
         print('Shortest Distance function selected.')
         print('Input your 2 points. Format: (x1, y1), (x2, y2)')
-        x1 = float(input("x1: "))
-        y1 = float(input("y1: "))
-        x2 = float(input("x2: "))
-        y2 = float(input("y2: "))
+        x1 = input("x1: ")
+        y1 = input("y1: ")
+        x2 = input("x2: ")
+        y2 = input("y2: ")
         
-        distance = shortestDistance(x1, y1, x2, y2)
-        print('Distance between', (x1,y1), 'and' , (x2,y2), 'is', distance)
+        try:
+            distance = shortestDistance(x1, y1, x2, y2)
+            print('Distance between', (x1,y1), 'and' , (x2,y2), 'is', distance)
+
+        except Exception as error:
+            print(error)
 
     elif(function == 4):
         print('Email Verifier function selected.')
@@ -201,4 +276,7 @@ def cliInterface():
 
 if __name__=='__main__':
     while True:
-        cliInterface()
+        try:
+            cliInterface()
+        except Exception as error:
+            print('\nInvalid input, enter a number 1-5')

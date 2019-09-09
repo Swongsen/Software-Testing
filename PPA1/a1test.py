@@ -24,6 +24,14 @@ def test_bmi():
     # Test Overweight
     assert bmi('5\'3\"', 155)[1] == 'Overweight'
 
+    # ------- TESTS FOR INVALID INPUT ---------
+
+    with pytest.raises(ValueError):
+        bmi('34', 'A')
+
+    with pytest.raises(ValueError):
+        bmi('5\'\'10\"', '100')
+
 def test_retirement():
     # Testing a manually calculated answer
     assert retirement(25, '$100,000', '10%', '$1,000,000') == 100
@@ -31,9 +39,26 @@ def test_retirement():
     # Testing a goal that is achieved within 1 year
     assert retirement(25, '$1,000,000,000', '10%', '$1') == 26
 
+    # ------- TESTS FOR INVALID INPUT ---------
+
     # Test that a user can't be 100+ years old
     with pytest.raises(ValueError):
         retirement(100, '$1,000,000,000', '10%', '$1')
+
+    # Test that ensures numeric inputs
+    with pytest.raises(ValueError):
+        retirement('A', 'B', 'C', 'D')
+
+    # Test for percent saved (can't be less than 0 or greater than 100)
+    with pytest.raises(ValueError):
+        retirement('50', '$50,000', '130%', '$100,000')
+    
+    with pytest.raises(ValueError):
+        retirement('50', '$50,000', '-5%', '$100,000')
+
+    # Test for salary (can't be less than 0)
+    with pytest.raises(ValueError):
+        retirement('50', '-$50,000', '5%', '$100,000')
 
 def test_shortestDistance():
     # Testing the special triangle: 3, 4, 5
@@ -43,6 +68,11 @@ def test_shortestDistance():
     # Using special triangle: 1, sqrt(2), 3
     # Using sqrt(2) definition from https://apod.nasa.gov/htmltest/gifcity/sqrt2.1mil
     assert round(shortestDistance(0, 0, 1, 1), 15) == 1.414213562373095
+
+    # ------- TESTS FOR INVALID INPUT ---------
+    
+    with pytest.raises(ValueError):
+        shortestDistance('A', 'B', 'C', 'D')
 
 def test_email():
     # email: some_string '@' domain
