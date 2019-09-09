@@ -181,7 +181,7 @@ def isValidEmail(email_string):
     
     # can't contain "(),:;<>@[\]'
     for char in '\"(),:;<>@[\\]\'':
-        if char in some_string or domain:
+        if (char in some_string) or (char in domain):
             return False
     
     # if nothing is wrong, it's valid

@@ -1,12 +1,13 @@
 import pytest
 from a1 import bmi, retirement, shortestDistance, isValidEmail
 
-# Always raises a ValueError
-def error():
-    raise ValueError('Hello')
-
 # Tests pytest's ability to check for ValueError
 def test_error():
+
+    # Always raises a ValueError
+    def error():
+        raise ValueError('Hello')
+    
     with pytest.raises(ValueError):
         error()
 
@@ -70,11 +71,11 @@ def test_shortestDistance():
     assert round(shortestDistance(0, 0, 1, 1), 15) == 1.414213562373095
 
     # ------- TESTS FOR INVALID INPUT ---------
-    
+
     with pytest.raises(ValueError):
         shortestDistance('A', 'B', 'C', 'D')
 
-def test_email():
+def test_isValidEmail():
     # email: some_string '@' domain
 
     # Testing proper formatting
