@@ -1,13 +1,14 @@
 import pytest
 from a1 import bmi, retirement, shortestDistance, isValidEmail
 
-# Tests pytest's ability to check for ValueError
+# Tests pytest's ability to check for an exception
 def test_error():
 
     # Always raises a ValueError
     def error():
         raise ValueError('Hello')
-    
+
+    # Test should pass since error() raises an error
     with pytest.raises(ValueError):
         error()
 
@@ -27,11 +28,19 @@ def test_bmi():
 
     # ------- TESTS FOR INVALID INPUT ---------
 
+    # Testing integer entered for height
     with pytest.raises(ValueError):
-        bmi('34', 'A')
+        bmi('34', '100')
 
+    # Testing non-numeric value entered for height
+    with pytest.raises(ValueError):
+        bmi('A', '100')
+
+    # Testing 2 single quotes
     with pytest.raises(ValueError):
         bmi('5\'\'10\"', '100')
+
+    
 
 def test_retirement():
     # Testing a manually calculated answer
@@ -50,10 +59,9 @@ def test_retirement():
     with pytest.raises(ValueError):
         retirement('A', 'B', 'C', 'D')
 
-    # Test for percent saved (can't be less than 0 or greater than 100)
+    # Tests for percent saved (can't be less than 0 or greater than 100)
     with pytest.raises(ValueError):
         retirement('50', '$50,000', '130%', '$100,000')
-    
     with pytest.raises(ValueError):
         retirement('50', '$50,000', '-5%', '$100,000')
 
@@ -72,6 +80,7 @@ def test_shortestDistance():
 
     # ------- TESTS FOR INVALID INPUT ---------
 
+    # Test for non-numeric input
     with pytest.raises(ValueError):
         shortestDistance('A', 'B', 'C', 'D')
 
