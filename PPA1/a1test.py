@@ -128,4 +128,3 @@ def test_isValidEmail():
     # Testing for spaces in either the some_string or domain
     assert isValidEmail('te st@gmail.com') == False
     assert isValidEmail('test@gm ail.com') == False
-    

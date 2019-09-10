@@ -194,7 +194,7 @@ def isValidEmail(email_string):
     # if nothing is wrong, it's valid
     return True
 
-def cliInterface():
+def cliInterface(): #pragma: no cover
 
     print('____________________')
     print('  Select a function\n')
