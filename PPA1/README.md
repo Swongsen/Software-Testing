@@ -71,8 +71,9 @@ TA: Lokesh Paluri
     pytest a1test.py
     ```
 
-## Output
+## Test Cases Output
 
+![Test output](testcaseoutput.PNG?raw=true "Test output")
 
 ## Test Coverage
 
