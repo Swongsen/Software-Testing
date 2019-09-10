@@ -14,12 +14,13 @@ TA: Lokesh Paluri
 - *a1test.py* contains tests for a1.py
 
 * Functions and their respective Test Functions:
-| **a1.py** | **a1test.py** |
-| --- | --- |
-| bmi | bmi_test |
-| retirement | retirement_test |
-| shortestDistance | shortestDistance_test |
-| isValidEmail | isValidEmail_test |
+
+    | **a1.py** | **a1test.py** |
+    | --- | --- |
+    | bmi | bmi_test |
+    | retirement | retirement_test |
+    | shortestDistance | shortestDistance_test |
+    | isValidEmail | isValidEmail_test |
 
 
 ## Setup and Execution
