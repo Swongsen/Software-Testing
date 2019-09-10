@@ -86,7 +86,7 @@ Code coverage done with Coverage.py
 
 *excluded lines include the command line interface
 
-[testing](htmlcov/a1_py.html)
+Visit [here](http://htmlpreview.github.io/?https://github.com/Swongsen/Software-Testing/blob/master/PPA1/htmlcov/a1_py.html) for an in-depth view of the code coverage, along with full documentation
 
 ## Experiences
 
