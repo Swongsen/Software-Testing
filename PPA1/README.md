@@ -17,10 +17,10 @@ TA: Lokesh Paluri
 
     | **a1.py** | **a1test.py** |
     | --- | --- |
-    | bmi | bmi_test |
-    | retirement | retirement_test |
-    | shortestDistance | shortestDistance_test |
-    | isValidEmail | isValidEmail_test |
+    | bmi | test_bmi |
+    | retirement | test_retirement |
+    | shortestDistance | test_shortestDistance |
+    | isValidEmail | test_isValidEmail |
 
 
 ## Setup and Execution
@@ -76,7 +76,7 @@ TA: Lokesh Paluri
 ![Test output](testcaseoutput.PNG?raw=true "Test output")
 
 ## Test Coverage
-
+Code coverage done with Coverage.py
 #### Coverage report: 82% ####
 
 | Module | statements | missing | excluded* | coverage |
