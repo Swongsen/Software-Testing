@@ -80,7 +80,7 @@ TA: Lokesh Paluri
 
 | Module | statements | missing | excluded | coverage |
 | --- | --- | --- | --- | --- |
-| [a1.py](a1_py.html) | 95 | 17 | 65 | 82% |
+| a1.py | 95 | 17 | 65 | 82% |
 | Total | 95 | 17 | 65 | 82% |
 
 
