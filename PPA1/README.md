@@ -76,6 +76,13 @@ TA: Lokesh Paluri
 
 ## Test Coverage
 
+#### Coverage report: 82% ####
+
+| Module | statements | missing | excluded | coverage |
+| --- | --- | --- | --- | --- |
+| [a1.py](a1_py.html) | 95 | 17 | 65 | 82% |
+| Total | 95 | 17 | 65 | 82% |
+
 
 ## Experiences
 
