@@ -287,3 +287,5 @@ if __name__=='__main__':
             cliInterface()
         except Exception as error:
             print('\nInvalid input, enter a number 1-5')
+        except KeyboardInterrupt:
+            sys.exit(0)
