@@ -79,5 +79,15 @@ TA: Lokesh Paluri
 
 ## Experiences
 
-- Alain Garcia: I believe that Test Driven Development (TDD) allows me to focus more on core features. Without TDD, I would often implement unnecessary or possibly redundant code. TDD also provides a fantastic way to organize your thoughts. A drawback to TDD is that it took me more time to finish the project.
+#### Alain Garcia: #### 
+
+I believe that Test Driven Development (TDD) allows me to focus more on core features. Without TDD, I would often implement unnecessary or possibly redundant code. TDD also provides a fantastic way to organize your thoughts. A drawback to TDD is that it took me more time to finish the project.
+
 Unit testing provides a much quicker way to make sure that everything in a given project still works. I found that while working on this project, there were many times where I would add code that would break certain functionality. Unit Testing made it so I could catch these mistakes before going any further.
+
+&nbsp;
+#### Spencer Wong: ####
+
+Before this assignment, I had no real unit testing or TDD experience. I think that this assignment and experience with both unit testing and TDD have been very eye opening and helpful to becoming a better programmer. Throughout university, my approach to coding projects and assignments had been getting pieces of the assignment working one small part at a time until the entire thing was done. At the end, there was no real way to tell if everything was working unless I thought of creative ways to test the program and try to "break" it. 
+
+I think that that TDD is useful and necessary for a real project, although tedious and time-consuming, and provides a good way to tell if you are concretely finished with a program. Some benefits of TDD include higher confidence in the code written as well as an ability to change parts of the code easier while a drawback would be of course longer time taken to complete a project since the tests have to be written along with the actual code.

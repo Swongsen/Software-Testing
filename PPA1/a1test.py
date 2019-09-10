@@ -87,6 +87,11 @@ def test_shortestDistance():
 def test_isValidEmail():
     # email: some_string '@' domain
 
+    # Testing normal emails
+    assert isValidEmail('student@ufl.edu') == True
+    assert isValidEmail('account@email.com') == True
+    assert isValidEmail('first.last@email.com') == True
+
     # Testing proper formatting
     # Needs @, and needs input for some_string and domain
     assert isValidEmail('test') == False
