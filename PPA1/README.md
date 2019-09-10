@@ -78,10 +78,12 @@ TA: Lokesh Paluri
 
 #### Coverage report: 82% ####
 
-| Module | statements | missing | excluded | coverage |
+| Module | statements | missing | excluded* | coverage |
 | --- | --- | --- | --- | --- |
 | a1.py | 95 | 17 | 65 | 82% |
 | Total | 95 | 17 | 65 | 82% |
+
+*excluded lines include the command line interface
 
 
 ## Experiences
