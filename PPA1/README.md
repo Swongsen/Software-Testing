@@ -15,12 +15,12 @@ TA: Lokesh Paluri
 
 * Functions and their respective Test Functions:
 
-    | **a1.py** | **a1test.py** |
-    | --- | --- |
-    | bmi | test_bmi |
-    | retirement | test_retirement |
-    | shortestDistance | test_shortestDistance |
-    | isValidEmail | test_isValidEmail |
+    | **a1.py** | **a1test.py** | **Description**
+    | --- | --- | ---
+    | bmi | test_bmi | Calculates Body Mass Index when given a height and weight
+    | retirement | test_retirement | Calculates age at which a savings goal is met
+    | shortestDistance | test_shortestDistance | Calculates the shortest distance between 2 points
+    | isValidEmail | test_isValidEmail | Determines whether an email is valid
 
 
 ## Setup and Execution
@@ -70,6 +70,9 @@ TA: Lokesh Paluri
     ```bash
     pytest a1test.py
     ```
+
+    [Video](https://www.youtube.com/watch?v=EoZe3E211Lk) of functionality
+    [Video](https://www.youtube.com/watch?v=TdmGrtPSQwY) of RGR process
 
 ## Test Cases Output
 
