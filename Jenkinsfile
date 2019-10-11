@@ -21,7 +21,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'pytest PPA1/test-reports/results.xml PPA1/a1test.py'
+                sh 'pytest PPA1/a1test.py'
             }
             post {
                 always {
