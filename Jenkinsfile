@@ -12,21 +12,12 @@ pipeline {
             }
             steps {
                 sh 'python -m py_compile PPA1/a1.py'
+		sh 'pip install pytest'
             }
         }
         stage('Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
-                }
-            }
             steps {
                 sh 'pytest PPA1/a1test.py'
-            }
-            post {
-                always {
-                    junit 'PPA1/test-reports/results.xml'
-                }
             }
         }
     }
