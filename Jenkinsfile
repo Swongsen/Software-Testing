@@ -14,18 +14,20 @@ pipeline {
             }
         }
         stage('Test') {
-            checkout scm
-            docker.image('mysql').withRun('-e "MYSQL_ROOT_PASSWORD=password"') { c ->
-                docker.image('mysql').inside("--link ${c.id}:db") {
-                    /* Wait until mysql service is up */
-                    sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
-                }
-                docker.image('python:3').inside("--link ${c.id}:db") {
-                    /*
-                    * Run some tests which require MySQL, and assume that it is
-                    * available on the host name `db`
-                    */
-                    sh 'pytest PPA1/a1test.py'
+            steps{
+                checkout scm
+                docker.image('mysql').withRun('-e "MYSQL_ROOT_PASSWORD=password"') { c ->
+                    docker.image('mysql').inside("--link ${c.id}:db") {
+                        /* Wait until mysql service is up */
+                        sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
+                    }
+                    docker.image('python:3').inside("--link ${c.id}:db") {
+                        /*
+                        * Run some tests which require MySQL, and assume that it is
+                        * available on the host name `db`
+                        */
+                        sh 'pytest PPA1/a1test.py'
+                    }
                 }
             }
         }
