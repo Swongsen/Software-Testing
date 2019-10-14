@@ -1,6 +1,14 @@
 import sys
 import math
 import re
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="admin",
+    passwd="admin",
+    database="mydatabase"
+)
 
 # IS NUMERIC INPUT FUNCTION
 # Input: potential_number (input that may have special characters like $, %, ., ', ")

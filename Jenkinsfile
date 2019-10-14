@@ -10,6 +10,7 @@ pipeline {
             steps {
                 sh 'python -m py_compile PPA1/a1.py'
 		sh 'pip install pytest'
+		sh 'pip install mysql'
             }
         }
         stage('Test') {
