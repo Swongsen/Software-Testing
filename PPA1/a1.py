@@ -4,11 +4,19 @@ import re
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="localhost",
-    user="admin",
-    passwd="admin",
-    database="mydatabase"
+    host="172.17.0.2",
+    user="root",
+    passwd="my-secret-pw"
 )
+
+mycursor = mydb.cursor()
+
+# Create DB if it doesn't exist
+mycursor.execute("CREATE DATABASE IF NOT EXISTS mydb")
+mycursor.execute("USE mydb")
+
+# Create tables if they don't exist
+mycursor.execute("CREATE TABLE IF NOT EXISTS shortestDistance(x1 FLOAT NOT NULL, y1 FLOAT NOT NULL, x2 FLOAT NOT NULL, y2 FLOAT NOT NULL, distance FLOAT NOT NULL, created_at TEXT NOT NULL)")
 
 # IS NUMERIC INPUT FUNCTION
 # Input: potential_number (input that may have special characters like $, %, ., ', ")
@@ -130,7 +138,6 @@ def retirement(current_age, salary, saved_percent, savings_goal):
 # Input: y2 (y coordinate of point 2)
 # Output: distance (euclidian distance between point 1 and 2)
 def shortestDistance(x1, y1, x2, y2):
-
     # Check for non-int/non-float answers
     for coord in (x1, y1, x2, y2):
         if not isNumericInput(coord, ['.']):
@@ -146,6 +153,8 @@ def shortestDistance(x1, y1, x2, y2):
     y_squared = (y2 - y1) * (y2 - y1)
     squared_distance = x_squared + y_squared
     distance = math.sqrt(squared_distance)
+
+    mycursor.execute("INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES({},{},{},{},{},NOW())".format(x1,y1,x2,y2,distance))
 
     return distance
 
@@ -256,6 +265,16 @@ def cliInterface(): #pragma: no cover
 
     elif(function == 3):
         print('Shortest Distance function selected.')
+        print('\nPrior Entries:')
+        mycursor.execute('DESCRIBE shortestDistance')
+        cols = []
+        for x in mycursor:
+            cols.append(x[0])
+        print(*cols, sep = "  ,  ")
+        mycursor.execute("SELECT * FROM shortestDistance")
+        for entry in mycursor:
+            print(entry)
+        print('\nEND of Prior Entries\n')
         print('Input your 2 points. Format: (x1, y1), (x2, y2)')
         x1 = input("x1: ")
         y1 = input("y1: ")
