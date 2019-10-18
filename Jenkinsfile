@@ -5,6 +5,11 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
+    environment {
+	db_name = "some-mysql"
+	db_user = "root"
+	db_pass = "my-secret-pw"
+    }
     stages {
         stage('Build') {
             steps {
@@ -14,21 +19,8 @@ pipeline {
             }
         }
         stage('Test') {
-            steps{
-                checkout scm
-                docker.image('mysql').withRun('-e "MYSQL_ROOT_PASSWORD=password"') { c ->
-                    docker.image('mysql').inside("--link ${c.id}:db") {
-                        /* Wait until mysql service is up */
-                        sh 'while ! mysqladmin ping -hdb --silent; do sleep 1; done'
-                    }
-                    docker.image('python:3').inside("--link ${c.id}:db") {
-                        /*
-                        * Run some tests which require MySQL, and assume that it is
-                        * available on the host name `db`
-                        */
-                        sh 'pytest PPA1/a1test.py'
-                    }
-                }
+            steps {
+                sh 'pytest PPA1/a1test.py'
             }
         }
     }
