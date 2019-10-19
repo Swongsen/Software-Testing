@@ -26,20 +26,38 @@ def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
         return 0, 0
     return mydb, mycursor
 
-def priorEntries(table_name, mycursor):
+def priorEntries(mycursor, table_name):
     print('\nPrior Entries:')
     try:
         mycursor.execute('DESCRIBE ' + table_name)
         cols = []
         for x in mycursor:
             cols.append(x[0])
-        print(*cols, sep = '  ,  ')
+        
         mycursor.execute('SELECT * FROM ' + table_name)
+        entries = []
         for entry in mycursor:
-            print(entry)
+            entries.append(entry)
+        
+        data = [cols, entries]
+        width = max(len(word) for row in data for word in row) + 2
+        for row in data:
+            print ''.join(word.ljust(width) for word in row)
+
     except Exception:
         print('Error retrieving prior entries')
     print('\nEND of Prior Entries\n')
+
+def databaseInsert(mycursor, table_name, values):
+    try:
+        statement = ''
+        values = ','.join(str(x) for x in values)
+        if table_name == 'shortestDistance':
+            statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
+        mycursor.execute(statement)
+    except Exception:
+        print('Error inserting into database.')
+    
 
 # IS NUMERIC INPUT FUNCTION
 # Input: potential_number (input that may have special characters like $, %, ., ', ")
@@ -153,17 +171,6 @@ def retirement(current_age, salary, saved_percent, savings_goal):
 
     savings_goal_age = years_to_goal + current_age
     return savings_goal_age
-
-def databaseInsert(mycursor, table_name, values):
-    try:
-        statement = ''
-        values = ','.join(str(x) for x in values)
-        if table_name == 'shortestDistance':
-            statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
-        mycursor.execute(statement)
-    except Exception:
-        print('Error inserting into database.')
-    
 
 # SHORTEST DISTANCE FUNCTION
 # Input: x1 (x coordinate of point 1)
@@ -297,7 +304,7 @@ def cliInterface(mycursor): #pragma: no cover
 
     elif(function == 3):
         print('Shortest Distance function selected.')
-        priorEntries('shortestDistance', mycursor)
+        priorEntries(mycursor, 'shortestDistance')
         print('Input your 2 points. Format: (x1, y1), (x2, y2)')
         x1 = input("x1: ")
         y1 = input("y1: ")
