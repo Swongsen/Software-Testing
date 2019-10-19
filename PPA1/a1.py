@@ -19,7 +19,7 @@ def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
 
         # Create tables if they don't exist
         mycursor.execute("CREATE TABLE IF NOT EXISTS shortestDistance(x1 FLOAT NOT NULL, y1 FLOAT NOT NULL, x2 FLOAT NOT NULL, y2 FLOAT NOT NULL, distance FLOAT NOT NULL, created_at TEXT NOT NULL)")
-    
+
     except Exception:
         print('Database Initialization Error.\n' + 
             'Read the README, make sure the database has been started, and make sure the IP is correct.')
@@ -34,27 +34,27 @@ def priorEntries(mycursor, table_name):
         for x in mycursor:
             cols.append(x[0])
         
-        mycursor.execute('SELECT * FROM ' + table_name)
-        entries = []
-        for entry in mycursor:
-            entries.append(entry)
-        
-        data = [cols, entries]
-        width = max(len(word) for row in data for word in row) + 2
-        for row in data:
-            print ''.join(word.ljust(width) for word in row)
+        data = []
+        data.append(cols)
 
-    except Exception:
+        mycursor.execute('SELECT * FROM ' + table_name)
+        for entry in mycursor:
+            data.append(list(entry))
+        print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in data]))
+
+    except Exception as error:
         print('Error retrieving prior entries')
+        print(error)
     print('\nEND of Prior Entries\n')
 
-def databaseInsert(mycursor, table_name, values):
+def databaseInsert(mydb, mycursor, table_name, values):
     try:
         statement = ''
         values = ','.join(str(x) for x in values)
         if table_name == 'shortestDistance':
             statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
         mycursor.execute(statement)
+        mydb.commit()
     except Exception:
         print('Error inserting into database.')
     
@@ -250,7 +250,7 @@ def isValidEmail(email_string):
     # if nothing is wrong, it's valid
     return True
 
-def cliInterface(mycursor): #pragma: no cover
+def cliInterface(mydb, mycursor): #pragma: no cover
 
     print('____________________')
     print('  Select a function\n')
@@ -312,8 +312,9 @@ def cliInterface(mycursor): #pragma: no cover
         y2 = input("y2: ")
 
         try:
-            distance = shortestDistance(x1, y1, x2, y2)
+            x1,y1,x2,y2,distance = shortestDistance(x1, y1, x2, y2)
             print('Distance between', (x1,y1), 'and' , (x2,y2), 'is', distance)
+            databaseInsert(mydb, mycursor, 'shortestDistance', [x1,y1,x2,y2,distance])
 
         except Exception as error:
             print(error)
@@ -344,7 +345,7 @@ if __name__=='__main__':
         mydb, mycursor = databaseCreation()
 
         try:
-            cliInterface(mycursor)
+            cliInterface(mydb, mycursor)
         except Exception as error:
             print('\nInvalid input, enter a number 1-5')
         except KeyboardInterrupt:
