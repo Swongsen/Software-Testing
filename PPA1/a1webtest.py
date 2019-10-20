@@ -13,7 +13,13 @@ class btest(unittest.TestCase):
         response = api_requests()
         self.assertEqual(response.status_code, 200)
 
+    def test_api_shortestDistance(self):
+        response = api_shortestDistance()
+        self.assertEqual(response.status_code, 200)
 
+    def test_api_bmi(self):
+        response = api_bmi()
+        self.assertEqual(response.status_code, 200)
 
 if __name__ == "__main__":
     unittest.main()
