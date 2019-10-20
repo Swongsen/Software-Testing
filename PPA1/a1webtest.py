@@ -1,23 +1,32 @@
 import a1web
 import pytest
 import unittest
-
-from a1web import run, api_requests, api_shortestDistance
+from unittest.mock import patch
+from users import get_users
+from a1web import run, api_requests, api_shortestDistance, api_bmi
 
 class btest(unittest.TestCase):
-    def test_run(self):
-        response = run()
+    @patch('users.requests.get')
+    def test_run(self, mock_get):
+        mock_get.return_value.status_code == 200
+        response = get_users()
         self.assertEqual(response.status_code, 200)
 
-    def test_api_requests(self):
-        response = api_requests()
+    @patch('users.requests.get')
+    def test_api_requests(self, mock_get):
+        mock_get.return_value.status_code == 200
+        response = get_users()
         self.assertEqual(response.status_code, 200)
 
-    def test_api_shortestDistance(self):
-        response = api_shortestDistance()
+    @patch('users.requests.get')
+    def test_api_shortestDistance(self, mock_get):
+        mock_get.return_value.status_code == 200
+        response = get_users()
         self.assertEqual(response.status_code, 200)
 
-    def test_api_bmi(self):
+    @patch('users.requests.get')
+    def test_api_bmi(self, mock_get):
+        mock_get.return_value.status_code == 200
         response = api_bmi()
         self.assertEqual(response.status_code, 200)
 
