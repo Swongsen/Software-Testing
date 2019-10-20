@@ -2,7 +2,7 @@ import sys
 import math
 import re
 import mysql.connector
-import threading
+import multiprocessing
 from a1web import run
 
 def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
@@ -257,7 +257,7 @@ def isValidEmail(email_string):
     # if nothing is wrong, it's valid
     return True
 
-def cliInterface(mydb, mycursor, thread): #pragma: no cover
+def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     print('____________________')
     print('  Select a function\n')
@@ -343,16 +343,16 @@ def cliInterface(mydb, mycursor, thread): #pragma: no cover
         print('The email you entered is {}'.format(validity))
 
     elif(function == 5):
-        thread.stop()
+       p.terminate()
         sys.exit(0)
 
     else:
         print('Invalid input, enter a number 1-5')
 
 if __name__=='__main__':
-    # Start separate thread for web service
-    #thread = threading.Thread(target=run)
-    #thread.start()
+    # Start separate process for web service
+    p = multiprocessing.Process(target=run)
+    p.start()
 
     # Initiate the database and cursor
     mydb, mycursor = databaseCreation()
@@ -360,10 +360,10 @@ if __name__=='__main__':
     while True:
 
         try:
-            cliInterface(mydb, mycursor, thread)
+            cliInterface(mydb, mycursor, p)
         except Exception as error:
             print('\nInvalid input, enter a number 1-5')
             print(error)
         except KeyboardInterrupt:
-            thread.stop()
+            p.terminate()
             sys.exit(0)
