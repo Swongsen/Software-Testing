@@ -1,34 +1,25 @@
 import a1web
 import pytest
-import unittest
-from unittest.mock import patch
-from users import get_users
+from unittest.mock import Mock
+
 from a1web import run, api_requests, api_shortestDistance, api_bmi
 
-class btest(unittest.TestCase):
-    @patch('users.requests.get')
-    def test_run(self, mock_get):
-        mock_get.return_value.status_code == 200
-        response = get_users()
-        self.assertEqual(response.status_code, 200)
+def test_run():
+    mock = Mock()
+    mock.run()
+    mock.run.assert_called()
 
-    @patch('users.requests.get')
-    def test_api_requests(self, mock_get):
-        mock_get.return_value.status_code == 200
-        response = get_users()
-        self.assertEqual(response.status_code, 200)
+def test_api_requests():
+    mock = Mock()
+    mock.api_requests()
+    mock.api_requests.assert_called()
 
-    @patch('users.requests.get')
-    def test_api_shortestDistance(self, mock_get):
-        mock_get.return_value.status_code == 200
-        response = get_users()
-        self.assertEqual(response.status_code, 200)
+def test_api_shortestDistance():
+    mock = Mock()
+    mock.api_shortestDistance()
+    mock.api_shortestDistance.assert_called()
 
-    @patch('users.requests.get')
-    def test_api_bmi(self, mock_get):
-        mock_get.return_value.status_code == 200
-        response = api_bmi()
-        self.assertEqual(response.status_code, 200)
-
-if __name__ == "__main__":
-    unittest.main()
+def test_api_bmi():
+    mock = Mock()
+    mock.api_bmi()
+    mock.api_bmi.assert_called()
