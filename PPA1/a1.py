@@ -2,7 +2,7 @@ import sys
 import math
 import re
 import mysql.connector
-import multiprocessing
+import threading
 from a1web import run
 
 def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
@@ -257,7 +257,7 @@ def isValidEmail(email_string):
     # if nothing is wrong, it's valid
     return True
 
-def cliInterface(mydb, mycursor, p): #pragma: no cover
+def cliInterface(mydb, mycursor, thread): #pragma: no cover
 
     print('____________________')
     print('  Select a function\n')
@@ -273,7 +273,7 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     if(function == 1):
         print('Body Mass Index function selected.')
-        priorEntries(mycursor, 'bmi')
+        #priorEntries(mycursor, 'bmi')
         print('Input height in feet and inches. (ex. 5\'10\")')
         height_input = input()
 
@@ -313,7 +313,7 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     elif(function == 3):
         print('Shortest Distance function selected.')
-        priorEntries(mycursor, 'shortestDistance')
+        #priorEntries(mycursor, 'shortestDistance')
         print('Input your 2 points. Format: (x1, y1), (x2, y2)')
         x1 = input("x1: ")
         y1 = input("y1: ")
@@ -343,16 +343,16 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
         print('The email you entered is {}'.format(validity))
 
     elif(function == 5):
-        p.terminate()
+        thread.stop()
         sys.exit(0)
 
     else:
         print('Invalid input, enter a number 1-5')
 
 if __name__=='__main__':
-    # Start separate process for web service
-    p = multiprocessing.Process(target=run)
-    p.start()
+    # Start separate thread for web service
+    #thread = threading.Thread(target=run)
+    #thread.start()
 
     # Initiate the database and cursor
     mydb, mycursor = databaseCreation()
@@ -360,10 +360,10 @@ if __name__=='__main__':
     while True:
 
         try:
-            cliInterface(mydb, mycursor, p)
+            cliInterface(mydb, mycursor, thread)
         except Exception as error:
             print('\nInvalid input, enter a number 1-5')
             print(error)
         except KeyboardInterrupt:
-            p.terminate()
+            thread.stop()
             sys.exit(0)
