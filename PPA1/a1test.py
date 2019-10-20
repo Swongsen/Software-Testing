@@ -1,5 +1,5 @@
 import pytest
-import unittest.mock
+from unittest.mock import Mock
 from a1 import bmi, retirement, shortestDistance, isValidEmail, databaseInsert
 
 # Tests pytest's ability to check for an exception
@@ -72,7 +72,7 @@ def test_retirement():
 
 def test_shortestDistance():
     mock = Mock()
-    mock.databaseInsert()??
+    mock.databaseInsert()
     mock.databaseInsert().assert_called()
     # Testing the special triangle: 3, 4, 5
     assert shortestDistance(0, 0, 3, 4) == 5
