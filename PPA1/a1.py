@@ -51,7 +51,8 @@ def priorEntries(mycursor, table_name):
 def databaseInsert(mydb, mycursor, table_name, values):
     try:
         statement = ''
-        values = ('\''+str(x)+'\'' for x in values)
+        values = (str(x).replace('\'', '\\\'').replace('\"','\\\"') for x in values)
+        values = ('\''+x+'\'' for x in values)
         values = ','.join(x for x in list(values))
         if table_name == 'shortestDistance':
             statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
