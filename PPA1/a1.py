@@ -24,7 +24,7 @@ def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
         mycursor.execute("CREATE TABLE IF NOT EXISTS bmi(height TINYTEXT NOT NULL, weight TINYTEXT NOT NULL, bmi TINYTEXT NOT NULL, classification TINYTEXT NOT NULL, created_at TEXT NOT NULL)")
 
     except Exception:
-        print('Database Initialization Error.\n' + 
+        print('Database Initialization Error.\n' +
             'Read the README, make sure the database has been started, and make sure the IP is correct.')
         return 0, 0
     return mydb, mycursor
@@ -36,7 +36,7 @@ def priorEntries(mycursor, table_name):
         cols = []
         for x in mycursor:
             cols.append(x[0])
-        
+
         data = []
         data.append(cols)
 
@@ -64,7 +64,7 @@ def databaseInsert(mydb, mycursor, table_name, values):
         mydb.commit()
     except Exception:
         print('Error inserting into database.')
-    
+
 
 # IS NUMERIC INPUT FUNCTION
 # Input: potential_number (input that may have special characters like $, %, ., ', ")
@@ -344,7 +344,7 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     elif(function == 5):
        p.terminate()
-        sys.exit(0)
+       sys.exit(0)
 
     else:
         print('Invalid input, enter a number 1-5')
