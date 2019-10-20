@@ -1,6 +1,61 @@
 import pytest
 from unittest.mock import Mock
-from a1 import bmi, retirement, shortestDistance, isValidEmail, databaseInsert
+from a1 import bmi, retirement, shortestDistance, isValidEmail, databaseCreation, priorEntries, databaseInsert
+
+def test_databaseCreation(mocker):
+
+    # Stub for databaseCreation
+    def foo1(databaseCreation):
+        databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw')
+    stub = mocker.stub(name='databaseCreation_stub')
+    foo1(stub)
+    # Asserts that the stub was called once with given parameters
+    stub.assert_called_once_with(host='172.17.0.2', user='root', passwd='my-secret-pw')
+
+
+    mock = Mock()
+    # Using an assert_not_called mock to make sure that databaseCreation has not occured yet
+    mock.databaseCreation.assert_not_called()
+    mock.databaseCreation()
+    # Using an assert_called() to make sure databaseCreation was called
+    mock.databaseCreation.assert_called()
+    # Using an assert_called_once mock to make sure databaseCreation was called only once
+    mock.databaseCreation.assert_called_once()
+
+
+def test_priorEntries(mocker):
+    # Stub for priorEntries
+    def foo2(priorEntries):
+        priorEntries()
+    stub = mocker.stub(name='priorEntries_stub')
+    foo2(stub)
+    stub.assert_called()
+
+    mock = Mock()
+    # Using an assert_not_called mock to make sure that priorEntries have not been called yet
+    mock.priorEntries.assert_not_called()
+    mock.priorEntries()
+    # Using an assert_called() mock to make sure priorEntries was called
+    mock.priorEntries.assert_called()
+    # Using an assert_called_once() to make sure priorEntries was called only once
+    mock.priorEntries.assert_called_once()
+
+def test_databaseInsert(mocker):
+    # Stub for database insert
+    def foo3(databaseInsert):
+        databaseInsert()
+    stub = mocker.stub(name='databaseInsert_stub')
+    foo3(stub)
+    stub.assert_called()
+
+    mock = Mock()
+    # Using an assert_not_called mock to make sure that databaseInsert have not been called yet
+    mock.databaseInsert.assert_not_called()
+    mock.databaseInsert()
+    # Using an assert_called() mock to make check if databaseInsert was called
+    mock.databaseInsert.assert_called()
+    # Using an assert_called_once() mock to make sure databaseInsert was called only once
+    mock.databaseInsert.assert_called_once()
 
 # Tests pytest's ability to check for an exception
 def test_error():
@@ -71,16 +126,14 @@ def test_retirement():
         retirement('50', '-$50,000', '5%', '$100,000')
 
 def test_shortestDistance():
-    mock = Mock()
-    mock.databaseInsert()
-    mock.databaseInsert().assert_called()
+
     # Testing the special triangle: 3, 4, 5
-    assert shortestDistance(0, 0, 3, 4) == 5
+    assert shortestDistance(0, 0, 3, 4) == (0, 0, 3, 4, 5)
 
     # Testing precision to 15 decimal points
     # Using special triangle: 1, sqrt(2), 3
     # Using sqrt(2) definition from https://apod.nasa.gov/htmltest/gifcity/sqrt2.1mil
-    assert round(shortestDistance(0, 0, 1, 1), 15) == 1.414213562373095
+    assert shortestDistance(0, 0, 1, 1) == (0, 0, 1, 1, 1.4142135623730951)
 
     # ------- TESTS FOR INVALID INPUT ---------
 
