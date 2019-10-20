@@ -15,6 +15,7 @@ pipeline {
             steps {
                 sh 'python -m py_compile PPA1/a1.py'
 		sh 'pip install pytest'
+		sh 'pip install pytest-mock'
 		sh 'pip install mysql-connector-python'
 		sh 'pip install flask'
             }
