@@ -20,9 +20,14 @@ pipeline {
 		sh 'pip install flask'
             }
         }
-        stage('Test') {
+        stage('Test Original PPA1 with Database') {
             steps {
                 sh 'pytest PPA1/a1test.py'
+            }
+        }
+        stage('Test Web Interface') {
+            steps {
+                sh 'pytest PPA1/a1webtest.py'
             }
         }
     }
