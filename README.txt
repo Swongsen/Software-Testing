@@ -1,3 +1,5 @@
+PPA2 CIS4930 FA2019 by: Spencer Wong and Alain Garcia
+
 CREATE MYSQL SERVER:
 docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
 
