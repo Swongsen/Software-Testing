@@ -73,7 +73,7 @@ def test_retirement():
 def test_shortestDistance():
     mock = Mock()
     mock.databaseInsert()??
-    
+    mock.databaseInsert().assert_called()
     # Testing the special triangle: 3, 4, 5
     assert shortestDistance(0, 0, 3, 4) == 5
 
