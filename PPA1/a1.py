@@ -19,6 +19,7 @@ def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
 
         # Create tables if they don't exist
         mycursor.execute("CREATE TABLE IF NOT EXISTS shortestDistance(x1 FLOAT NOT NULL, y1 FLOAT NOT NULL, x2 FLOAT NOT NULL, y2 FLOAT NOT NULL, distance FLOAT NOT NULL, created_at TEXT NOT NULL)")
+        mycursor.execute("CREATE TABLE IF NOT EXISTS bmi(height TINYTEXT NOT NULL, weight TINYTEXT NOT NULL, bmi FLOAT NOT NULL, classification TINYTEXT NOT NULL, created_at TEXT NOT NULL)")
 
     except Exception:
         print('Database Initialization Error.\n' + 
@@ -53,6 +54,8 @@ def databaseInsert(mydb, mycursor, table_name, values):
         values = ','.join(str(x) for x in values)
         if table_name == 'shortestDistance':
             statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
+        elif table_name == 'bmi':
+            statement = 'INSERT INTO shortestDistance(height,weight,bmi,classification,created_at) VALUES('+values+',NOW())'
         mycursor.execute(statement)
         mydb.commit()
     except Exception:
@@ -266,6 +269,7 @@ def cliInterface(mydb, mycursor): #pragma: no cover
 
     if(function == 1):
         print('Body Mass Index function selected.')
+        priorEntries(mycursor, 'bmi')
         print('Input height in feet and inches. (ex. 5\'10\")')
         height_input = input()
 
@@ -274,6 +278,7 @@ def cliInterface(mydb, mycursor): #pragma: no cover
 
         try:
             BMI, classification = bmi(height_input, weight_input)
+            databaseInsert(mydb,mycursor,'bmi',[height_input, weight_input, BMI, classification])
             print('BMI: {}, Weight Classification: {}'.format(BMI, classification))
         except Exception as error:
             print(error)
