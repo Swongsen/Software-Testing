@@ -9,3 +9,5 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' som
 
 INSTALL MYSQL.CONNECTOR:
 pip install mysql-connector-python
+pip install flask
+pip install pytest-mock
