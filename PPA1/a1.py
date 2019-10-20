@@ -19,7 +19,7 @@ def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
 
         # Create tables if they don't exist
         mycursor.execute("CREATE TABLE IF NOT EXISTS shortestDistance(x1 FLOAT NOT NULL, y1 FLOAT NOT NULL, x2 FLOAT NOT NULL, y2 FLOAT NOT NULL, distance FLOAT NOT NULL, created_at TEXT NOT NULL)")
-        mycursor.execute("CREATE TABLE IF NOT EXISTS bmi(height TINYTEXT NOT NULL, weight TINYTEXT NOT NULL, bmi FLOAT NOT NULL, classification TINYTEXT NOT NULL, created_at TEXT NOT NULL)")
+        mycursor.execute("CREATE TABLE IF NOT EXISTS bmi(height TINYTEXT NOT NULL, weight TINYTEXT NOT NULL, bmi TINYTEXT NOT NULL, classification TINYTEXT NOT NULL, created_at TEXT NOT NULL)")
 
     except Exception:
         print('Database Initialization Error.\n' + 
@@ -51,7 +51,8 @@ def priorEntries(mycursor, table_name):
 def databaseInsert(mydb, mycursor, table_name, values):
     try:
         statement = ''
-        values = ','.join(str(x) for x in values)
+        values = ('\''+str(x)+'\'' for x in values)
+        values = ','.join(x for x in list(values))
         if table_name == 'shortestDistance':
             statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
         elif table_name == 'bmi':
