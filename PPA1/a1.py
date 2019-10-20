@@ -273,7 +273,7 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     if(function == 1):
         print('Body Mass Index function selected.')
-        #priorEntries(mycursor, 'bmi')
+        priorEntries(mycursor, 'bmi')
         print('Input height in feet and inches. (ex. 5\'10\")')
         height_input = input()
 
@@ -313,7 +313,7 @@ def cliInterface(mydb, mycursor, p): #pragma: no cover
 
     elif(function == 3):
         print('Shortest Distance function selected.')
-        #priorEntries(mycursor, 'shortestDistance')
+        priorEntries(mycursor, 'shortestDistance')
         print('Input your 2 points. Format: (x1, y1), (x2, y2)')
         x1 = input("x1: ")
         y1 = input("y1: ")
