@@ -55,6 +55,7 @@ def databaseInsert(mydb, mycursor, table_name, values):
         if table_name == 'shortestDistance':
             statement = 'INSERT INTO shortestDistance(x1,y1,x2,y2,distance,created_at) VALUES('+values+',NOW())'
         elif table_name == 'bmi':
+            print('INSERT INTO shortestDistance(height,weight,bmi,classification,created_at) VALUES('+values+',NOW())')
             statement = 'INSERT INTO shortestDistance(height,weight,bmi,classification,created_at) VALUES('+values+',NOW())'
         mycursor.execute(statement)
         mydb.commit()
