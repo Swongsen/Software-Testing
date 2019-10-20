@@ -2,6 +2,11 @@ import sys
 import math
 import re
 import mysql.connector
+import threading
+from a1web import run
+
+thread = threading.Thread(target=run)
+thread.start()
 
 def databaseCreation(host='172.17.0.2', user='root', passwd='my-secret-pw'):
     try:
