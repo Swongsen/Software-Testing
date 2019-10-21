@@ -40,6 +40,7 @@ def api_bmi():
 		json_data.append(dict(zip(row_headers,result)))
 
 	mycursor.execute('INSERT INTO requests(table_name, created_at) VALUES (\'bmi\',NOW())')
+	mydb.commit()
 	return jsonify(json_data)
 
 @app.route('/shortestDistance')
@@ -52,6 +53,7 @@ def api_shortestDistance():
 		json_data.append(dict(zip(row_headers,result)))
 
 	mycursor.execute('INSERT INTO requests(table_name, created_at) VALUES (\'shortestDistance\',NOW())')
+	mydb.commit()
 	return jsonify(json_data)
 
 @app.route('/requests')
@@ -64,6 +66,7 @@ def api_requests():
 		json_data.append(dict(zip(row_headers,result)))
 
 	mycursor.execute('INSERT INTO requests(table_name, created_at) VALUES (\'requests\',NOW())')
+	mydb.commit()
 	return jsonify(json_data)
 
 def run():
